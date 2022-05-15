@@ -5,7 +5,7 @@ import Topbar from './components/Topbar';
 import Navbar from './components/Navbar';
 import SliderImage from './components/SliderImage';
 import Announcement from './components/Announcement';
-import QuickLinks from './components/QuickLinks';
+import QuickLinks from './components/QuickLinks'; 
 import FeaturedVideos from './components/FeaturedVideos';
 import Footer from './components/Footer';
 import NotesSlider from './components/NotesSlider';
@@ -28,11 +28,17 @@ import GPapers from './pages/papers/GPapers';
 import PPapers from './pages/papers/PPapers';
 import RNavbar from './components/RNavbar';
 import {Routes,Route} from 'react-router-dom';
-import AdminProducts from './pages/admin/AdminCategories';
+import ClassesPage from './pages/admin/ClassesPage';
+import SubjectsPage from './pages/admin/SubjectsPage';
+import NotesPage from './pages/admin/NotesPage';
+import PapersPage from './pages/admin/PapersPage';
+import SSchemesPage from './pages/admin/SSchemesPage';
+import EBooksPage from './pages/admin/EBooksPage';
+import AdminLogin from './pages/admin/AdminLogin';
 
 
 function App() {
-  const [nav, setNav] = useState(9);
+  const [nav, setNav] = useState(0);
   const [paper, setPaper] = useState(9);
   return (
     <Routes>
@@ -114,7 +120,14 @@ function App() {
         <Footer />
         </div>
       } /> 
-      <Route path="/admin" element={<AdminProducts />} />
+      <Route path="/adminlogin" element={<AdminLogin />} />
+      <Route path="/admin" element={<ClassesPage />} />
+      <Route path="/admin/subjects" element={<SubjectsPage />} />
+      <Route path="/admin/notes" element={<NotesPage />} />
+      <Route path="/admin/papers" element={<PapersPage />} />
+      <Route path="/admin/studyschemes" element={<SSchemesPage />} />
+      <Route path="/admin/ebooks" element={<EBooksPage />} />
+      <Route path="/admin/classes" element={<ClassesPage />} />
     </Routes>
   );
 }

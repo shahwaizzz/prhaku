@@ -1,6 +1,7 @@
 import React from 'react'
 // import { useHistory } from 'react-router-dom';
 
+
 const Sidebar = (props) => {
     // const history = useHistory();
     //   const logout = () => {
@@ -12,9 +13,9 @@ const Sidebar = (props) => {
     <div className={sidebar}>
     <div className="logo-details">
       <i className='bx bxl-c-plus-plus'></i>
-      <span className="logo_name">CodingLab</span>
+      <span style={{fontWeight: '700'}} className="logo_name">PARHAAKU</span>
     </div>
-      <ul className="nav-links">
+      <ul className="nav-links" style={{paddingLeft: '0px'}}>
         <li>
           <a href="/admin" className="active">
             <i className='bx bx-grid-alt' ></i>
@@ -22,39 +23,39 @@ const Sidebar = (props) => {
           </a>
         </li>
         <li>
-          <a href="/Admin/Products">
+          <a href="/admin/classes">
             <i className='bx bx-box' ></i>
-            <span className="links_name">Product</span>
+            <span className="links_name">Classes</span>
           </a>
         </li>
         <li>
-          <a href="#">
+          <a href="/admin/subjects">
             <i className='bx bx-list-ul' ></i>
-            <span className="links_name">Order list</span>
+            <span className="links_name">Subjects</span>
           </a>
         </li>
         <li>
-          <a href="/admin/categories">
+          <a href="/admin/notes">
             <i className='bx bx-pie-chart-alt-2' ></i>
-            <span className="links_name">Categories</span>
+            <span className="links_name">Notes</span>
           </a>
         </li>
         <li>
-          <a href="#">
+          <a href="/admin/papers">
             <i className='bx bx-coin-stack' ></i>
-            <span className="links_name">Stock</span>
+            <span className="links_name">Papers</span>
           </a>
         </li>
         <li>
-          <a href="#">
+          <a href="/admin/ebooks">
             <i className='bx bx-book-alt' ></i>
-            <span className="links_name">Total order</span>
+            <span className="links_name">E-Books</span>
           </a>
         </li>
         <li>
-          <a href="/admin/users">
+          <a href="/admin/studyschemes">
             <i className='bx bx-user' ></i>
-            <span className="links_name">Users</span>
+            <span className="links_name">Study Schemes</span>
           </a>
         </li>
         <li>

@@ -5,14 +5,14 @@ import {FaDiceSix} from 'react-icons/fa';
 
 const TSeries = () => {
   return (
-    <Container fluid className='px-5'>
+    <Container fluid className='px-md-5 px-3'>
         <Row>
             <Col md={10}>
                 <div className='ts-thead'>
                   <div className='ts-icon-div'>
                     <FaDiceSix style={{padding: '20px 15px',borderRadius: '50%', marginTop:'-8px', border: '1px solid black', backgroundColor: 'white',marginLeft: '-11px'}} size="2.6cm" />
                   </div>
-                    <div className='ts-thead-txt bg-warning'>Class Wise Test Series</div>
+                    <div className='ts-thead-txt bg-warning'> Class Wise Test Series</div>
                 </div> 
                 <div className='py-4'></div>
                 <div className='table-div px-2'>
