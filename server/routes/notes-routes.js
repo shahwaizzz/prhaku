@@ -1,24 +1,19 @@
 const express = require("express");
 const router = express.Router();
 const {
-  createEbook,
-  getAllEbooks,
-  getSingleEbook,
-  deleteEbook,
-  getAllNews,
-  createNews,
-  deleteNews,
-  editNews,
-  getSingleNews,
+  createNotes,
+  getAllNotes,
+  getSingleNotes,
+  deleteNotes,
 } = require("../controllers/admin-controller");
 
 const multer = require("multer");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    if (file.fieldname === "ebookImage") {
-      cb(null, "./public/ebook/images/");
+    if (file.fieldname === "notesImage") {
+      cb(null, "./public/notes/images/");
     } else {
-      cb(null, "./public/ebook/docs/");
+      cb(null, "./public/notes/docs/");
     }
   },
   filename: function (req, file, cb) {
@@ -26,7 +21,7 @@ const storage = multer.diskStorage({
   },
 });
 const fileFilter = (req, file, cb) => {
-  if (file.fieldname === "ebookDoc") {
+  if (file.fieldname === "notesDoc") {
     // if uploading resume
     if (
       file.mimetype === "application/pdf" ||
@@ -64,18 +59,14 @@ const upload = multer({
 
 //ebooks routing
 router.post(
-  "/create-ebook",
+  "/create-notes",
   upload.fields([
-    { name: "ebookImage", maxCount: 1 },
-    { name: "ebookDoc", maxCount: 1 },
+    { name: "notesImage", maxCount: 1 },
+    { name: "notesDoc", maxCount: 1 },
   ]),
-  createEbook
+  createNotes
 );
-router.route("/ebooks").get(getAllEbooks);
-router.route("/ebooks/:id").get(getSingleEbook).delete(deleteEbook);
-
-//news routes
-router.route("/news").get(getAllNews).post(createNews);
-router.route("/news/:id").get(getSingleNews).delete(deleteNews);
+router.route("/notes").get(getAllNotes);
+router.route("/notes/:id").get(getSingleNotes).delete(deleteNotes);
 
 module.exports = router;
