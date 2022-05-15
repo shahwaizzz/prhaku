@@ -1,6 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const { createEbook, check } = require("../controllers/admin-controller");
+const {
+  createEbook,
+  getAllEbooks,
+  getSingleEbook,
+  deleteEbook,
+  check,
+} = require("../controllers/admin-controller");
 
 const multer = require("multer");
 const storage = multer.diskStorage({
@@ -85,6 +91,8 @@ router.post(
   ]),
   createEbook
 );
+router.route("/ebooks").get(getAllEbooks);
+router.route("/ebooks/:id").get(getSingleEbook).delete(deleteEbook);
 router.get("/check", check);
 
 module.exports = router;
