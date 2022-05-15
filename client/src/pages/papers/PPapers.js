@@ -12,7 +12,7 @@ const PPapers = () => {
                   <div className='ts-icon-div'>
                     <FaDiceSix style={{padding: '20px 15px',borderRadius: '50%', marginTop:'-8px', border: '1px solid black', backgroundColor: 'white',marginLeft: '-11px'}} size="2.6cm" />
                   </div>
-                    <div className='ts-thead-txt bg-warning'>Board Wise Past Paper</div>
+                    <div className='ts-thead-txt bg-warning'> Board Wise Past Paper</div>
                 </div> 
                 <div className='py-4'></div>
                 <div className='table-div px-2'>
@@ -116,7 +116,7 @@ const PPapers = () => {
                     </div>
 
                     <div className='ts-thead'>
-                        <div className='ts-thead-txt bg-warning'>University Wise Past Paper</div>
+                        <div className='ts-thead-txt bg-warning'>University Wise Past Paper </div>
                         <div className='ts-icon-div2'>
                             <FaDiceSix style={{padding: '20px 15px',borderRadius: '50%', marginTop:'-8px', border: '1px solid black', backgroundColor: 'white',marginLeft: '-11px'}} size="2.6cm" />
                         </div>
@@ -151,7 +151,7 @@ const PPapers = () => {
 
 
                     <div className='ts-thead'>
-                        <div className='ts-thead-txt bg-warning'>Category Wise Past Paper</div>
+                        <div className='ts-thead-txt bg-warning'>Category Wise  Past Paper</div>
                         <div className='ts-icon-div2'>
                             <FaDiceSix style={{padding: '20px 15px',borderRadius: '50%', marginTop:'-8px', border: '1px solid black', backgroundColor: 'white',marginLeft: '-11px'}} size="2.6cm" />
                         </div>

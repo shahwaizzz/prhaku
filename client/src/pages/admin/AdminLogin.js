@@ -1,91 +1,51 @@
-import React, {useState} from "react";
-import { Link } from "react-router-dom";
-// import { useHistory } from "react-router-dom";
-import axios from "axios";
-// import {useState,useContext} from 'react';
-// import {UserContext} from '../context/UserContext';
-import '../components/css/Signup.css';
-const baseURL = "http://localhost:5000/api/auth/";
-
-
+import React from 'react'
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
 
 const AdminLogin = () => {
-    const history = useHistory();
-    if(localStorage.getItem('admintoken')){
-        // history.push('/admin');
-    }
-    const [user, setUser] = useState({email: "", password: ""});
-    const [errMsg, setErrMsg] = useState('');
+  return (
+    <>
+        <section className="vh-100 gradient-custom" style={{backgroundColor: '#e9ecef'}}>
+            <div className="container py-3 h-100">
+                <div className="row d-flex justify-content-center align-items-center h-100">
+                <div className="col-12 col-md-8 col-lg-6 col-xl-5">
+                    <div className="card " style={{bordeRadius:'1rem'}}>
+                    <div className="card-body p-5">
 
-    let name, value;
-    const handleInput = (e) =>{
-        console.log(e);
-        name = e.target.name;
-        value = e.target.value;
+                        <div className="mb-md-5 mt-md-4 pb-5">
 
-        setUser({...user, [name]:value});
-    }
-    
-    const LoginFun = async (e) =>{
-        console.log("Form submitted Succfully");
-        alert("form submitted");
-        e.preventDefault();
-        // alert("submited");
-        const {email, password}= user;
-        axios.post(baseURL, {
-            email, password
-        })
-        .then((response) => {
-            if(response.data.isAdmin){
-                alert("Logged in succfully");
-                localStorage.setItem('admintoken',response.data.accessToken)
-                history.push("/admin");
-            }else{
-                setErrMsg('')
-            }
+                        <h2 className="fw-bold mb-2 text-uppercase">Login</h2>
+                        <Form>
+                            <Form.Group className="mb-3" controlId="formBasicEmail">
+                                <Form.Label>Email address</Form.Label>
+                                <Form.Control type="email" placeholder="Enter email" />
+                                {/* <Form.Text className="text-muted">
+                                We'll never share your email with anyone else.
+                                </Form.Text> */}
+                            </Form.Group>
 
-        }).catch((error) => {
-            console.log(error);
-        });
-    }
+                            <Form.Group className="mb-3" controlId="formBasicPassword">
+                                <Form.Label>Password</Form.Label>
+                                <Form.Control type="password" placeholder="Password" />
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="formBasicCheckbox">
+                                <Form.Check type="checkbox" label="Check me out" />
+                            </Form.Group>
+                            <Button variant="primary" type="submit">
+                                Submit
+                            </Button>
+                            </Form>
+                        </div>
 
-
-    return (
-        <>            
-            <div className="split-screen">
-                <div className="left">
-                    <section className="signup-form">
-                        <h1 className="form-title">  </h1>
-                    </section>
-                </div>
-                <div className='right'>
-                    <form  onSubmit={LoginFun} method="POST">
-                        <section className='copy'>
-                            <h2>Admin Login</h2>
-                        </section>                                            
-                        <div className="input-container email">
-                            <label htmlFor="email">
-                            Email
-                            </label>
-                            <input type='email' name='email' onChange={handleInput} value={user.email}  
                         
-                                placeholder='Enter Your Email'></input>
-                        </div> 
-                        <div className="input-container password">
-                            <label htmlFor="password">
-                            password
-                            </label>
-                            <input type='password' name='password'  
-                                value={user.password}
-                                placeholder='Enter Your password' onChange={handleInput}>
-                                </input>
-                        </div>    
-                        <button  className="signup-btn" type='submit'> Log In</button>
-                        <Link to='/Sign_Up'> Not a member?</Link>    
-                    </form>
-                </div>                
+                    </div>
+                    </div>
+                </div>
+                </div>
             </div>
-        </>                  
-    );         
+            </section>
+    </>
+  )
 }
-export default AdminLogin; 
+
+export default AdminLogin

@@ -24,7 +24,7 @@ const RNavbar = (props) => {
         {/* <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand> */}
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="me-auto">
+            <Nav className="me-auto nav-resp">
             <Nav.Link href="" onClick={()=> setNav(0)} className=' mx-lg-5 w-100 text-lg-center'>
                 <AiOutlineHome color="white" className="navbar-icons" />
                 <h5 className='d-lg-block d-inline mx-lg-0 mx-5'>Home</h5>
