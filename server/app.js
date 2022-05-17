@@ -8,6 +8,15 @@ const errorHandlerMiddleware = require("./middleware/error-handler");
 const notFoundMiddleware = require("./middleware/not-found");
 const adminAuthRoutes = require("./routes/admin-auth-routes");
 const adminRoutes = require("./routes/admin-routes");
+const cors = require('cors')
+
+const corsOptions ={
+    origin:'http://localhost:3000', 
+    credentials:true,            //access-control-allow-credentials:true
+    optionSuccessStatus:200
+}
+
+app.use(cors(corsOptions))
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
