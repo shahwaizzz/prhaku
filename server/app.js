@@ -18,6 +18,8 @@ const corsOptions ={
 
 app.use(cors(corsOptions))
 
+const notesRoutes = require("./routes/notes-routes");
+const paperRoutes = require("./routes/paper-routes");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -37,24 +39,13 @@ app.use((req, res, next) => {
 //my routers
 app.use("/auth/admin", adminAuthRoutes);
 app.use("/admin", adminRoutes);
+app.use("/notes", notesRoutes);
+app.use("/paper", paperRoutes);
 // not found middleware
 app.use(notFoundMiddleware);
-// app.use((req, res, next) => {
-//   const error = new Error("Not Found");
-//   error.status = 404;
-//   next(error);
-// });
 
 //error handler middleware
 app.use(errorHandlerMiddleware);
-// app.use((error, req, res, next) => {
-//   res.status(error.status || 500);
-//   res.json({
-//     error: {
-//       message: error.message,
-//     },
-//   });
-// });
 
 const PORT = process.env.PORT || 5000;
 
