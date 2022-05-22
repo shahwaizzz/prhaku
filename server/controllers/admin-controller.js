@@ -7,6 +7,7 @@ const Paper = require("../models/paper-model");
 //-------- Ebooks -------------
 const createEbook = async (req, res) => {
   console.log("in create ebook");
+  console.log("body : ", req.body)
   const ebook = await Ebook.create({
     ...req.body,
     ebookImage: req.files.ebookImage[0].path,

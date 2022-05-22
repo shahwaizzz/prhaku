@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
-// import axios from "axios";
+import axios from "axios";
 import Button from  'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
+import {useForm} from 'react-hook-form'
 
 const EBooks = () => {
   const [show, setShow] = useState(false);
   const [show1, setShow1] = useState(false);  
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const {register, handleSubmit } = useForm();
 
   // useEffect(() => {
   //   axios.get("http://localhost:5000/api/categories").then((response) => {
@@ -45,7 +48,20 @@ const EBooks = () => {
     // setProduct({ ...product, img: e.target.files[0]});
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit3 = (e) => {
+    alert("Request send")
+    e.preventDefault();
+    console.log("hello world");
+    const formData = new FormData();
+    formData.append("title", product.title);
+    formData.append("category", product.category);
+    formData.append("ebookImage", product.image);
+    formData.append("ebookDoc", product.bookfile);
+    console.log("FormData : ", formData);
+
+  }
+
+  const handleSubmit1 = async (e) => {
     // alert("Request send")
     // e.preventDefault();
     // console.log("hello world");
@@ -127,13 +143,29 @@ const EBooks = () => {
   //       alert("error in sending request");
   //     });
   }
+
+  const onSubmit = (data) => {
+    console.log(data);
+    axios
+      .post("http://localhost:5000/admin/create-ebook", {...data})
+      .then((res) => {
+        console.log(res);
+        alert("EBook added successfully");
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("error in sending request");
+      });
+  }
+
+
   return (
     <>
       <div className='recent-sales box' style={{ width: "100%" }}>
         <div className='title'>
-          Classes
+          E-Books
           <button onClick={handleShow} className='add-pbtn btn btn-success' style={{float: 'right'}}>
-            Add Class
+            Add E-Book
           </button>
         </div>
         <div className='sales-details'>
@@ -141,8 +173,10 @@ const EBooks = () => {
             <thead>
               <tr>
                 <th>Sr</th>
-                <th>Class Name</th>
+                <th>Title</th>
+                <th>Category</th>
                 <th>Image</th>
+                <th>File</th>
                 <th>Edit</th>
                 <th>Delete</th>
               </tr>
@@ -151,34 +185,38 @@ const EBooks = () => {
               <tr className="mt-2">
                 <td>1</td>
                 <td>Class One</td>
+                <td>Cat2</td>
                 <td>Image</td>
+                <td>file1</td>
                 <td><button className="btn mt-2 btn-primary px-4" onClick={() => setShow1(true)}>Edit</button></td>
                 <td><button className="btn mt-2 btn-danger">Delete</button></td>
-                <td>1</td>
               </tr>
               <tr className="mt-2">
-                <td>1</td>
+                <td>2</td>
                 <td>Class One</td>
+                <td>cat3</td>
                 <td>Image</td>
+                <td>file23</td>
                 <td><button className="btn mt-2 btn-primary px-4" onClick={() => setShow1(true)}>Edit</button></td>
                 <td><button className="btn mt-2 btn-danger">Delete</button></td>
-                <td>1</td>
               </tr>
               <tr className="mt-2">
-                <td>1</td>
+                <td>3</td>
                 <td>Class One</td>
+                <td>cat2</td>
+                <td>Image</td>
                 <td>Image</td>
                 <td><button className="btn mt-2 btn-primary px-4" onClick={() => setShow1(true)}>Edit</button></td>
                 <td><button className="btn mt-2 btn-danger">Delete</button></td>
-                <td>1</td>
               </tr>
               <tr className="mt-2">
-                <td>1</td>
+                <td>4</td>
                 <td>Class One</td>
+                <td>cat6</td>
+                <td>Image</td>
                 <td>Image</td>
                 <td><button className="btn mt-2 btn-primary px-4" onClick={() => setShow1(true)}>Edit</button></td>
                 <td><button className="btn mt-2 btn-danger">Delete</button></td>
-                <td>1</td>
               </tr>
             </tbody>
           </table>
@@ -190,29 +228,37 @@ const EBooks = () => {
           {/* modal for adding new item */}
 
           <Modal show={show} onHide={handleClose}>
+              <Form encType="multipart/form-data" onSubmit={handleSubmit(onSubmit)}>
             <Modal.Header closeButton>
-              <Modal.Title className="fw-700">Add Class</Modal.Title>
+              <Modal.Title className="fw-700">Add E-Book</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <Form>
                 <Form.Group className="mb-3" controlId="formGroupEmail">
-                  <Form.Label>Class Name</Form.Label>
-                  <Form.Control type="text" placeholder="Enter Class Name" />
+                  <Form.Label>E-Book Title</Form.Label>
+                  <Form.Control type="text" {...register("title")} placeholder="Enter E-Book Title" required />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formGroupCategory">
+                  <Form.Label>E-Book Category</Form.Label>
+                  <Form.Control type="text" {...register("category")} placeholder="Enter E-Book Title" required />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formGroupPassword" >
+                  <Form.Label>Image</Form.Label>
+                  <Form.Control type="file" {...register("ebookImage")} placeholder="Select An Image" required />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formGroupPassword">
-                  <Form.Label>Image</Form.Label>
-                  <Form.Control type="file" placeholder="Select An Image" />
+                  <Form.Label>File</Form.Label>
+                  <Form.Control type="file" {...register("ebookDoc")} placeholder="Select An Image" required />
                 </Form.Group>
-              </Form>
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleClose}>
                 Close
               </Button>
-              <Button variant="primary" onClick={handleClose}>
+              <Button variant="primary" type="submit">
                 Submit
               </Button>
             </Modal.Footer>
+              </Form>
           </Modal>
 
           {/* Model for updating item */}
@@ -222,7 +268,7 @@ const EBooks = () => {
               <Modal.Title className="fw-700">Edit Class</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <Form>
+              <Form encType="multipart/form-data">
                 <Form.Group className="mb-3" controlId="formGroupEmail">
                   <Form.Label>Class Name</Form.Label>
                   <Form.Control type="text" placeholder="Enter Class Name" />
