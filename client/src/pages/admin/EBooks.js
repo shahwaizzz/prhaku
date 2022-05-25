@@ -10,6 +10,8 @@ const EBooks = () => {
   const [show1, setShow1] = useState(false);  
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [img, setImg] = useState(null);
+  const [doc, setDoc] = useState(null);
 
   const {register, handleSubmit } = useForm();
 
@@ -146,8 +148,12 @@ const EBooks = () => {
 
   const onSubmit = (data) => {
     console.log(data);
+    const ob = {title: data.title, category: data.category, ebookImage: img, ebookDoc: doc}
+    console.log(ob)
+    console.log('img : ',img);
+    console.log('doc : ',doc);
     axios
-      .post("http://localhost:5000/admin/create-ebook", {...data})
+      .post("http://localhost:5000/admin/create-ebook", {title: data.title, category: data.category, ebookImage: img, ebookDoc: doc})
       .then((res) => {
         console.log(res);
         alert("EBook added successfully");
@@ -243,11 +249,11 @@ const EBooks = () => {
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formGroupPassword" >
                   <Form.Label>Image</Form.Label>
-                  <Form.Control type="file" {...register("ebookImage")} placeholder="Select An Image" required />
+                  <Form.Control type="file" {...register("ebookImage")} name="img" onChange={(e) => setImg(e.target.files[0])} placeholder="Select An Image" required />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formGroupPassword">
                   <Form.Label>File</Form.Label>
-                  <Form.Control type="file" {...register("ebookDoc")} placeholder="Select An Image" required />
+                  <Form.Control type="file" {...register("ebookDoc")} name="doc" onChange={(e) => setDoc(e.target.files[0])} placeholder="Select An Image" required />
                 </Form.Group>
             </Modal.Body>
             <Modal.Footer>

@@ -16,10 +16,10 @@ import {AiOutlineHome} from 'react-icons/ai';
 const Navbar = (props) => {
     const {setNav} = props;
     return(
-        <div className='navbar1'>
+        <div className='navbar1 d-lg-flex d-none'>
             <div className='div4' onClick={()=> setNav(0)}>
                 <AiOutlineHome className="navbar-icons" />
-                <h5>Home</h5>
+                <h5>Home</h5> 
             </div>
             <div className='div1' onClick={()=> setNav(7)}>
                 <img src={updateIcon2} className="navbar-icons" alt="updates-icon" />

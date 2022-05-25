@@ -46,7 +46,8 @@ function App() {
         <div>
         <Topbar />
         {/* <Navbar setNav={setNav} /> */}
-        <RNavbar setNav={setNav} />
+        <RNavbar className="d-md-none d-block" setNav={setNav} />
+        <Navbar className="d-md-block d-none" />
         {
           nav === 0?(
             <>

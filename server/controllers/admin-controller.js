@@ -14,6 +14,12 @@ const createEbook = async (req, res) => {
     ebookDoc: req.files.ebookDoc[0].path,
   });
 
+  // const ebook = await Ebook.create({
+  //   ...req.body,
+  //   ebookImage: req.files.ebookImage[0].path,
+  //   ebookDoc: req.files.ebookDoc[0].path,
+  // });
+
   res.status(StatusCodes.CREATED).json({ msg: "Ebook Created Succesfully" });
 };
 const getAllEbooks = async (req, res) => {

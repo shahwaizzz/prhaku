@@ -19,7 +19,7 @@ import navimg from '../img/navbg.jpg';
 const RNavbar = (props) => {
     const {setNav} = props;
   return (
-    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" style={{backgroundImage: `url(${navimg})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}>
+    <Navbar collapseOnSelect className='d-lg-none d-block' expand="lg" variant="dark" style={{backgroundImage: `url(${navimg})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}>
         <Container>
         {/* <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand> */}
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
