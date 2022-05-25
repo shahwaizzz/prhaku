@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from "react";
-// import axios from "axios";
+import axios from "axios";
 import Button from  'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
+import { useForm } from "react-hook-form";
 
 const Papers = () => {
   const [show, setShow] = useState(false);
   const [show1, setShow1] = useState(false);  
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShow = () => setShow(true); 
+  const [img, setImg] = useState(null);
+  const [doc, setDoc] = useState(null);
+  const [data, setData] = useState(null);
+
+  const { register, handleSubmit } = useForm();
 
   // useEffect(() => {
   //   axios.get("http://localhost:5000/api/categories").then((response) => {
@@ -24,17 +30,8 @@ const Papers = () => {
   //     console.log(error);
   //   })    
   // },[])
-  const [product, setProduct] = useState({
-    title: "",
-    desc: "",
-    category: "",
-    size: "",
-    color: "",
-    quantity: "",
-    price: "",
-    img: "",
-  });
-  let name, value;
+
+
   const handleInput = (e) => {
     // name = e.target.name;
     // value = e.target.value;
@@ -45,7 +42,7 @@ const Papers = () => {
     // setProduct({ ...product, img: e.target.files[0]});
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit2 = async (e) => {
     // alert("Request send")
     // e.preventDefault();
     // console.log("hello world");
@@ -127,13 +124,39 @@ const Papers = () => {
   //       alert("error in sending request");
   //     });
   }
+
+  const onSubmit = (paper) => {
+    console.log(paper);
+    const formData = new FormData();
+    formData.append("board", paper.board);
+    formData.append("class", paper.class);
+    formData.append("subject", paper.subject);
+    formData.append("type", paper.type);
+    formData.append("university", paper.university);
+    formData.append("paperDoc", doc);
+    console.log("FormData : ", formData);
+    console.log("img : ", img);
+    console.log("doc : ", doc);
+    axios
+      .post("http://localhost:5000/paper/create-paper", formData)
+      .then((res) => {
+        console.log(res);
+        alert("Paper added successfully");
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("error in sending request");
+      });
+  };
+
+
   return (
     <>
       <div className='recent-sales box' style={{ width: "100%" }}>
         <div className='title'>
-          Classes
+          Papers
           <button onClick={handleShow} className='add-pbtn btn btn-success' style={{float: 'right'}}>
-            Add Class
+            Add paper
           </button>
         </div>
         <div className='sales-details'>
@@ -190,29 +213,76 @@ const Papers = () => {
           {/* modal for adding new item */}
 
           <Modal show={show} onHide={handleClose}>
-            <Modal.Header closeButton>
-              <Modal.Title className="fw-700">Add Class</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Form>
-                <Form.Group className="mb-3" controlId="formGroupEmail">
-                  <Form.Label>Class Name</Form.Label>
-                  <Form.Control type="text" placeholder="Enter Class Name" />
+            <Form encType='multipart/form-data' onSubmit={handleSubmit(onSubmit)}>
+              <Modal.Header closeButton>
+                <Modal.Title className='fw-700'>Add Paper</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form.Group className='mb-3' controlId='formGroupEmail'>
+                  <Form.Label>Board</Form.Label>
+                  <Form.Control
+                    type='text'
+                    {...register("board")}
+                    placeholder='Enter Board'
+                    required
+                  />
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="formGroupPassword">
-                  <Form.Label>Image</Form.Label>
-                  <Form.Control type="file" placeholder="Select An Image" />
+                <Form.Group className='mb-3' controlId='formGroupCategory'>
+                  <Form.Label>Category</Form.Label>
+                  <Form.Control
+                    type='text'
+                    {...register("class")}
+                    placeholder='Enter Category'
+                    required
+                  />
                 </Form.Group>
-              </Form>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
-                Close
-              </Button>
-              <Button variant="primary" onClick={handleClose}>
-                Submit
-              </Button>
-            </Modal.Footer>
+                <Form.Group className='mb-3' controlId='formGroupCategory'>
+                  <Form.Label>Subject</Form.Label>
+                  <Form.Control
+                    type='text'
+                    {...register("subject")}
+                    placeholder='Enter Subject'
+                    required
+                  />
+                </Form.Group>
+                <Form.Group className='mb-3' controlId='formGroupCategory'>
+                  <Form.Label>Type</Form.Label>
+                  <Form.Select aria-label="Default select example" {...register("type")}>
+                    <option>Select Type</option>
+                    <option value="Past Paper">Past Paper</option>
+                    <option value="Guess Paper">Guess Paper</option>
+                    <option value="Test Series">Test Series</option>
+                  </Form.Select>
+                </Form.Group>
+                <Form.Group className='mb-3' controlId='formGroupCategory'>
+                  <Form.Label>university</Form.Label>
+                  <Form.Control
+                    type='text'
+                    {...register("university")}
+                    placeholder='Enter University'
+                  />
+                </Form.Group>
+                <Form.Group className='mb-3' controlId='formGroupPassword'>
+                  <Form.Label>File</Form.Label>
+                  <Form.Control
+                    type='file'
+                    {...register("notesDoc")}
+                    name='doc'
+                    onChange={(e) => setDoc(e.target.files[0])}
+                    placeholder='Select An Image'
+                    required
+                  />
+                </Form.Group>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant='secondary' onClick={handleClose}>
+                  Close
+                </Button>
+                <Button variant='primary' type='submit'>
+                  Submit
+                </Button>
+              </Modal.Footer>
+            </Form>
           </Modal>
 
           {/* Model for updating item */}

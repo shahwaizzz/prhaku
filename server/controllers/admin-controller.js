@@ -27,7 +27,7 @@ const getAllEbooks = async (req, res) => {
   if (!ebooks) {
     throw new NotFoundError("No Ebooks Found");
   }
-  res.status(StatusCodes.OK).json({ ...ebooks });
+  res.status(StatusCodes.OK).json({ ebooks });
 };
 const getSingleEbook = async (req, res) => {
   const ebook = await Ebook.findOne({ _id: req.params.id });
@@ -59,7 +59,7 @@ const getAllNotes = async (req, res) => {
   if (!notes) {
     throw new NotFoundError("No Notes Found");
   }
-  res.status(StatusCodes.OK).json({ ...notes });
+  res.status(StatusCodes.OK).json({ notes });
 };
 const getSingleNotes = async (req, res) => {
   const notes = await Notes.findOne({ _id: req.params.id });
@@ -107,6 +107,7 @@ const getSingleNews = async (req, res) => {
 };
 // paper
 const createPaper = async (req, res) => {
+  console.log(req.file);
   const paper = await Paper.create({ ...req.body, paperDoc: req.file.path });
   res.status(StatusCodes.CREATED).json({ msg: "Paper Created" });
 };

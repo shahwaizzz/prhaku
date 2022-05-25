@@ -48,7 +48,7 @@ function App() {
             <Topbar />
             {/* <Navbar setNav={setNav} /> */}
             <RNavbar className='d-md-none d-block' setNav={setNav} />
-            <Navbar className='d-md-block d-none' />
+            <Navbar className='d-md-block d-none' setNav={setNav} />
             {nav === 0 ? (
               <>
                 <SliderImage />

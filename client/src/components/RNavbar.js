@@ -41,7 +41,7 @@ const RNavbar = (props) => {
                 <img src={examsIcon1} color="white" style={{color:'white'}} className="navbar-icons" alt="updates-icon" />
                 <h5 className='d-lg-block d-inline mx-lg-0 mx-5'>Papers</h5>
             </Nav.Link>
-            <Nav.Link href="" style={{minWidth: '150px'}} className='mx-lg-4 text-lg-center'>
+            <Nav.Link href="" style={{minWidth: '150px'}} onClick={()=> setNav(11)} className='mx-lg-4 text-lg-center'>
                 <img src={stydyschemesIcon1} className="navbar-icons" alt="updates-icon" />
                 <h5 className='d-lg-block d-inline mx-lg-0 mx-5' style={{minWidth: '150px'}}>Study Schemes</h5>
             </Nav.Link>

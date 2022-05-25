@@ -16,9 +16,9 @@ const multer = require("multer");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     if (file.fieldname === "ebookImage") {
-      cb(null, "./public/ebook/images/");
+      cb(null, "../client/public/ebook/images/");
     } else {
-      cb(null, "./public/ebook/docs/");
+      cb(null, "../client/public/ebook/docs/");
     }
   },
   filename: function (req, file, cb) {
@@ -63,7 +63,7 @@ const upload = multer({
 });
 
 //ebooks routing
-router.post(
+router.post( 
   "/create-ebook",
   upload.fields([
     { name: "ebookImage", maxCount: 1 },

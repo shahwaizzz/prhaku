@@ -11,9 +11,9 @@ const multer = require("multer");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     if (file.fieldname === "notesImage") {
-      cb(null, "./public/notes/images/");
+      cb(null, "../client/public/notes/images/");
     } else {
-      cb(null, "./public/notes/docs/");
+      cb(null, "../client/public/notes/docs/");
     }
   },
   filename: function (req, file, cb) {

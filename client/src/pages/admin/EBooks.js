@@ -12,6 +12,7 @@ const EBooks = () => {
   const handleShow = () => setShow(true);
   const [img, setImg] = useState(null);
   const [doc, setDoc] = useState(null);
+  const [data, setData] = useState(null);
 
   const { register, handleSubmit } = useForm();
 
@@ -22,13 +23,16 @@ const EBooks = () => {
   //     console.log(error);
   //   })
   // },[])
-  // useEffect(() => {
-  //   axios.get("http://localhost:5000/api/products").then((response) => {
-  //     setData(response.data);
-  //   }).catch((error) => {
-  //     console.log(error);
-  //   })
-  // },[])
+  useEffect(() => {
+    axios.get("http://localhost:5000/admin/ebooks").then((response) => {
+      setData(response.data.ebooks);
+      console.log("Response : ", response);
+      console.log("Response data : ", response.data);
+      console.log("data : ", data);
+    }).catch((error) => {
+      console.log(error);
+    })
+  },[])
   const [product, setProduct] = useState({
     title: "",
     desc: "",
@@ -51,14 +55,14 @@ const EBooks = () => {
 
   const handleSubmit3 = (e) => {
     alert("Request send");
-    e.preventDefault();
-    console.log("hello world");
-    const formData = new FormData();
-    formData.append("title", product.title);
-    formData.append("category", product.category);
-    formData.append("ebookImage", product.image);
-    formData.append("ebookDoc", product.bookfile);
-    console.log("FormData : ", formData);
+    // e.preventDefault();
+    // console.log("hello world");
+    // const formData = new FormData();
+    // formData.append("title", product.title);
+    // formData.append("category", product.category);
+    // formData.append("ebookImage", product.image);
+    // formData.append("ebookDoc", product.bookfile);
+    // console.log("FormData : ", formData);
   };
 
   const handleSubmit1 = async (e) => {
@@ -191,12 +195,13 @@ const EBooks = () => {
               </tr>
             </thead>
             <tbody>
-              <tr className='mt-2'>
-                <td>1</td>
-                <td>Class One</td>
-                <td>Cat2</td>
-                <td>Image</td>
-                <td>file1</td>
+            {data!== null?data.map((book, index) => (
+              <tr className='mt-2' key={index}>
+                <td>{index+1}</td>
+                <td>{book.title}</td>
+                <td>{book.category}</td>
+                <td>{book.ebookImage}</td>
+                <td>{book.ebookDoc}</td>
                 <td>
                   <button
                     className='btn mt-2 btn-primary px-4'
@@ -209,6 +214,7 @@ const EBooks = () => {
                   <button className='btn mt-2 btn-danger'>Delete</button>
                 </td>
               </tr>
+            )):''}
               <tr className='mt-2'>
                 <td>2</td>
                 <td>Class One</td>
