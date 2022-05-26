@@ -4,6 +4,7 @@ const Ebook = require("../models/ebook-model");
 const Notes = require("../models/notes-model");
 const News = require("../models/news-model");
 const Paper = require("../models/paper-model");
+const studySchemeModel = require("../models/study-scheme-model");
 //-------- Ebooks -------------
 const createEbook = async (req, res) => {
   console.log("in create ebook");
@@ -113,6 +114,26 @@ const deletePaper = async (req, res) => {
   const deletedPaper = await Paper.findByIdAndDelete({ _id: req.paramas.id });
   res.status(StatusCodes.OK).json({ msg: "Paper Deleted" });
 };
+const createStudyScheme = async (req, res) => {
+  const studyScheme = await studySchemeModel.create({
+    ...req.body,
+    studySchemeDoc: req.file.path,
+  });
+  res.status(StatusCodes.CREATED).json({ msg: "Study Scheme Created" });
+};
+const viewAllStudySchemes = async (req, res) => {
+  const studySchemes = await studySchemeModel.find({});
+  res.status(StatusCodes.OK).json({ studySchemes });
+};
+const deleteStudyScheme = async (req, res) => {
+  const deletedStudyScheme = await Paper.findByIdAndDelete({
+    _id: req.paramas.id,
+  });
+  if (!deletedStudyScheme) {
+    throw new NotFoundError("Study Scheme does not exist");
+  }
+  res.status(StatusCodes.OK).json({ msg: "Study Scheme Deleted" });
+};
 
 module.exports = {
   createEbook,
@@ -131,4 +152,7 @@ module.exports = {
   createPaper,
   viewAllPapers,
   deletePaper,
+  createStudyScheme,
+  viewAllStudySchemes,
+  deleteStudyScheme,
 };
