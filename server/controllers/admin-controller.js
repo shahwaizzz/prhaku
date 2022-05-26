@@ -7,18 +7,12 @@ const Paper = require("../models/paper-model");
 //-------- Ebooks -------------
 const createEbook = async (req, res) => {
   console.log("in create ebook");
-  console.log("body : ", req.body)
+  console.log("body : ", req.body);
   const ebook = await Ebook.create({
     ...req.body,
     ebookImage: req.files.ebookImage[0].path,
     ebookDoc: req.files.ebookDoc[0].path,
   });
-
-  // const ebook = await Ebook.create({
-  //   ...req.body,
-  //   ebookImage: req.files.ebookImage[0].path,
-  //   ebookDoc: req.files.ebookDoc[0].path,
-  // });
 
   res.status(StatusCodes.CREATED).json({ msg: "Ebook Created Succesfully" });
 };
