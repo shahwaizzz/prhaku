@@ -47,12 +47,12 @@ app.use("/notes", notesRoutes);
 app.use("/paper", paperRoutes);
 app.use("/studyscheme", studyschemeRoutes);
 // not found middleware
-// app.use(notFoundMiddleware);
-app.use((req, res, next) => {
-  const error = new Error("Not found");
-  error.status = 404;
-  next(error);
-});
+app.use(notFoundMiddleware);
+// app.use((req, res, next) => {
+//   const error = new Error("Not found");
+//   error.status = 404;
+//   next(error);
+// });
 
 //error handler middleware
 app.use(errorHandlerMiddleware);
