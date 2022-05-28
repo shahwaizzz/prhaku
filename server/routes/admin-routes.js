@@ -4,6 +4,7 @@ const {
   createEbook,
   getAllEbooks,
   getSingleEbook,
+  updateEbook,
   deleteEbook,
   getAllNews,
   createNews,
@@ -16,9 +17,9 @@ const multer = require("multer");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     if (file.fieldname === "ebookImage") {
-      cb(null, "../client/public/ebook/images/");
+      cb(null, "./public/ebook/images/");
     } else {
-      cb(null, "../client/public/ebook/docs/");
+      cb(null, "./public/ebook/docs/");
     }
   },
   filename: function (req, file, cb) {
@@ -63,7 +64,7 @@ const upload = multer({
 });
 
 //ebooks routing
-router.post( 
+router.post(
   "/create-ebook",
   upload.fields([
     { name: "ebookImage", maxCount: 1 },
@@ -73,9 +74,17 @@ router.post(
 );
 router.route("/ebooks").get(getAllEbooks);
 router.route("/ebooks/:id").get(getSingleEbook).delete(deleteEbook);
+router.patch(
+  "/ebooks/:id",
+  upload.fields([
+    { name: "ebookImage", maxCount: 1 },
+    { name: "ebookDoc", maxCount: 1 },
+  ]),
+  updateEbook
+);
 
 //news routes
 router.route("/news").get(getAllNews).post(createNews);
-router.route("/news/:id").get(getSingleNews).delete(deleteNews);
+router.route("/news/:id").get(getSingleNews).delete(deleteNews).patch(editNews);
 
 module.exports = router;

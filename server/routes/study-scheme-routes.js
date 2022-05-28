@@ -1,16 +1,16 @@
 const express = require("express");
 const router = express.Router();
 const {
-  createPaper,
-  deletePaper,
-  viewAllPapers,
-  getSinglePaper,
-  editPaper,
+  createStudyScheme,
+  viewAllStudySchemes,
+  deleteStudyScheme,
+  getSingleStudyScheme,
+  editStudyScheme,
 } = require("../controllers/admin-controller");
 const multer = require("multer");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "./public/papers/");
+    cb(null, "./public/studyschemes/");
   },
   filename: function (req, file, cb) {
     cb(null, new Date().toISOString().replace(/:/g, "-") + file.originalname);
@@ -31,9 +31,13 @@ const upload = multer({
   fileFilter: fileFilter,
 });
 
-router.post("/create-paper", upload.single("paperDoc"), createPaper);
-router.route("/").get(viewAllPapers);
-router.route("/:id").delete(deletePaper).get(getSinglePaper);
-router.patch("/:id", upload.single("paperDoc"), editPaper);
+router.post(
+  "/create-studyScheme",
+  upload.single("studySchemeDoc"),
+  createStudyScheme
+);
+router.route("/").get(viewAllStudySchemes);
+router.route("/:id").delete(deleteStudyScheme).get(getSingleStudyScheme);
+router.patch("/:id", upload.single("studySchemeDoc"), editStudyScheme);
 
 module.exports = router;

@@ -6,10 +6,14 @@ const bodyParser = require("body-parser");
 const connectDb = require("./db/connect");
 const errorHandlerMiddleware = require("./middleware/error-handler");
 const notFoundMiddleware = require("./middleware/not-found");
+const morgan = require("morgan");
 const adminAuthRoutes = require("./routes/admin-auth-routes");
 const adminRoutes = require("./routes/admin-routes");
+const studyschemeRoutes = require("./routes/study-scheme-routes");
 const cors = require("cors");
 
+app.use(morgan("dev"));
+app.use("/public", express.static("public"));
 const corsOptions = {
   origin: "http://localhost:3000",
   credentials: true, //access-control-allow-credentials:true
@@ -20,7 +24,6 @@ app.use(cors(corsOptions));
 
 const notesRoutes = require("./routes/notes-routes");
 const paperRoutes = require("./routes/paper-routes");
-app.use("/public", express.static("public"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -42,8 +45,14 @@ app.use("/auth/admin", adminAuthRoutes);
 app.use("/admin", adminRoutes);
 app.use("/notes", notesRoutes);
 app.use("/paper", paperRoutes);
+app.use("/studyscheme", studyschemeRoutes);
 // not found middleware
-app.use(notFoundMiddleware);
+// app.use(notFoundMiddleware);
+app.use((req, res, next) => {
+  const error = new Error("Not found");
+  error.status = 404;
+  next(error);
+});
 
 //error handler middleware
 app.use(errorHandlerMiddleware);
