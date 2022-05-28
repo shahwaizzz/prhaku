@@ -13,6 +13,7 @@ const Notes = () => {
   const [img, setImg] = useState(null);
   const [doc, setDoc] = useState(null);
   const [data, setData] = useState(null);
+  const [editData, setEditData] = useState(null);
 
   const { register, handleSubmit } = useForm();
 
@@ -41,6 +42,20 @@ const Notes = () => {
   const onChange = (e) => {
     // setProduct({ ...product, img: e.target.files[0]});
   };
+
+  const handleEdit = (id) => {
+    alert('set edit');
+    setShow1(true);
+    alert(id);
+    setEditData('znotes');
+    axios.get(`http://localhost:5000/notes/notes/${id}`).then((response) => {
+      const {notes} = response.data;
+      console.log("response : ", response.data.notes)
+      console.log("editData : ", editData)
+    }).catch((error) => {
+      console.log(error);
+    }) 
+  }
 
   const handleSubmit1 = async (e) => {
     // alert("Request send")
@@ -178,9 +193,12 @@ const Notes = () => {
                 <td>{notes.title}</td>
                 <td>{notes.class}</td>
                 <td>{notes.subject}</td>
+                {/* <td>Image{index+1}</td> */}
                 <td>{notes.notesImage}</td>
-                <td>{notes.notesDoc}</td>
-                <td><button className="btn mt-2 btn-primary px-4" onClick={() => setShow1(true)}>Edit</button></td>
+                <td>Doc{index+1}</td>
+                {/* <td><img src={`../../../${notes.notesImage}`} width="60px" height="40px" alt="notes_image" /></td> */}
+                {/* <td>{notes.notesDoc}</td> */}
+                <td><button className="btn mt-2 btn-primary px-4" onClick={() => handleEdit(notes._id)}>Edit</button></td>
                 <td><button className="btn mt-2 btn-danger">Delete</button></td>
               </tr>
             ))}              

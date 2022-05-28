@@ -135,7 +135,6 @@ const Papers = () => {
     formData.append("university", paper.university);
     formData.append("paperDoc", doc);
     console.log("FormData : ", formData);
-    console.log("img : ", img);
     console.log("doc : ", doc);
     axios
       .post("http://localhost:5000/paper/create-paper", formData)
