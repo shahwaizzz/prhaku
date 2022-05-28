@@ -4,11 +4,13 @@ const {
   createStudyScheme,
   viewAllStudySchemes,
   deleteStudyScheme,
+  getSingleStudyScheme,
+  editStudyScheme,
 } = require("../controllers/admin-controller");
 const multer = require("multer");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "../client/public/studyschemes/");
+    cb(null, "./public/studyschemes/");
   },
   filename: function (req, file, cb) {
     cb(null, new Date().toISOString().replace(/:/g, "-") + file.originalname);
@@ -35,6 +37,7 @@ router.post(
   createStudyScheme
 );
 router.route("/").get(viewAllStudySchemes);
-router.route("/:id").delete(deleteStudyScheme);
+router.route("/:id").delete(deleteStudyScheme).get(getSingleStudyScheme);
+router.patch("/:id", upload.single("studySchemeDoc"), editStudyScheme);
 
 module.exports = router;

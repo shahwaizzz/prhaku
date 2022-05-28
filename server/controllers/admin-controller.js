@@ -31,6 +31,16 @@ const getSingleEbook = async (req, res) => {
   }
   res.status(StatusCodes.OK).json({ ebook });
 };
+const updateEbook = async (req, res) => {
+  const ebook = await Ebook.findOneAndUpdate({ _id: req.params.id }, req.body, {
+    new: true,
+    runValidators: true,
+  });
+  if (!ebook) {
+    throw new NotFoundError("Ebook does not exist");
+  }
+  res.status(StatusCodes.OK).json({ msg: "Ebook Updated" });
+};
 const deleteEbook = async (req, res) => {
   const deletedEbook = await Ebook.findByIdAndDelete({ _id: req.params.id });
   if (!deletedEbook) {
@@ -63,6 +73,16 @@ const getSingleNotes = async (req, res) => {
   }
   res.status(StatusCodes.OK).json({ notes });
 };
+const updateNotes = async (req, res) => {
+  const notes = await Notes.findOneAndUpdate({ _id: req.params.id }, req.body, {
+    new: true,
+    runValidators: true,
+  });
+  if (!notes) {
+    throw new NotFoundError("Notes does not exist");
+  }
+  res.status(StatusCodes.OK).json({ msg: "Notes Updated" });
+};
 const deleteNotes = async (req, res) => {
   const deletedNotes = await Notes.findByIdAndDelete({ _id: req.params.id });
   if (!deletedNotes) {
@@ -76,7 +96,7 @@ const createNews = async (req, res) => {
   res.status(StatusCodes.CREATED).json({ msg: "News Created" });
 };
 const editNews = async (req, res) => {
-  const news = await News.findByIdAndUpdate({ _id: req.params.id }, req.body, {
+  const news = await News.findOneAndUpdate({ _id: req.params.id }, req.body, {
     new: true,
     runValidators: true,
   });
@@ -110,8 +130,29 @@ const viewAllPapers = async (req, res) => {
   const papers = await Paper.find({});
   res.status(StatusCodes.OK).json({ papers });
 };
+const getSinglePaper = async (req, res) => {
+  const paper = await Paper.findOne({ _id: req.params.id });
+  if (!paper) {
+    throw new NotFoundError("Paper does not found");
+  }
+  res.status(StatusCodes.OK).json({ paper });
+};
+const editPaper = async (req, res) => {
+  const updatedPaper = await Paper.findByIdAndUpdate(
+    { _id: req.params.id },
+    req.body,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+  if (!updatedPaper) {
+    throw new NotFoundError("Paper does not exist");
+  }
+  res.status(StatusCodes.OK).json({ msg: "Paper Updated" });
+};
 const deletePaper = async (req, res) => {
-  const deletedPaper = await Paper.findByIdAndDelete({ _id: req.paramas.id });
+  const deletedPaper = await Paper.findByIdAndDelete({ _id: req.params.id });
   res.status(StatusCodes.OK).json({ msg: "Paper Deleted" });
 };
 const createStudyScheme = async (req, res) => {
@@ -124,6 +165,27 @@ const createStudyScheme = async (req, res) => {
 const viewAllStudySchemes = async (req, res) => {
   const studySchemes = await studySchemeModel.find({});
   res.status(StatusCodes.OK).json({ studySchemes });
+};
+const getSingleStudyScheme = async (req, res) => {
+  const studyScheme = await studySchemeModel.findOne({ _id: req.params.id });
+  if (!studyScheme) {
+    throw new NotFoundError("Study Scheme does not found");
+  }
+  res.status(StatusCodes.OK).json({ studyScheme });
+};
+const editStudyScheme = async (req, res) => {
+  const updatedStudyScheme = await studySchemeModel.findByIdAndUpdate(
+    { _id: req.params.id },
+    req.body,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+  if (!updatedStudyScheme) {
+    throw new NotFoundError("Study Scheme does not exist");
+  }
+  res.status(StatusCodes.OK).json({ msg: "Study Scheme Updated" });
 };
 const deleteStudyScheme = async (req, res) => {
   const deletedStudyScheme = await Paper.findByIdAndDelete({
@@ -139,10 +201,12 @@ module.exports = {
   createEbook,
   deleteEbook,
   getAllEbooks,
+  updateEbook,
   getSingleEbook,
   createNotes,
   getAllNotes,
   getSingleNotes,
+  updateNotes,
   deleteNotes,
   createNews,
   deleteNews,
@@ -151,8 +215,12 @@ module.exports = {
   getSingleNews,
   createPaper,
   viewAllPapers,
+  getSinglePaper,
+  editPaper,
   deletePaper,
   createStudyScheme,
   viewAllStudySchemes,
+  getSingleStudyScheme,
+  editStudyScheme,
   deleteStudyScheme,
 };

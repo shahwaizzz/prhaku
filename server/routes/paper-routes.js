@@ -4,11 +4,13 @@ const {
   createPaper,
   deletePaper,
   viewAllPapers,
+  getSinglePaper,
+  editPaper,
 } = require("../controllers/admin-controller");
 const multer = require("multer");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "../client/public/papers/");
+    cb(null, "./public/papers/");
   },
   filename: function (req, file, cb) {
     cb(null, new Date().toISOString().replace(/:/g, "-") + file.originalname);
@@ -31,6 +33,7 @@ const upload = multer({
 
 router.post("/create-paper", upload.single("paperDoc"), createPaper);
 router.route("/").get(viewAllPapers);
-router.route("/:id").delete(deletePaper);
+router.route("/:id").delete(deletePaper).get(getSinglePaper);
+router.patch("/:id", upload.single("paperDoc"), editPaper);
 
 module.exports = router;

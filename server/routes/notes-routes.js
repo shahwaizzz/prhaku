@@ -4,6 +4,7 @@ const {
   createNotes,
   getAllNotes,
   getSingleNotes,
+  updateNotes,
   deleteNotes,
 } = require("../controllers/admin-controller");
 
@@ -11,9 +12,9 @@ const multer = require("multer");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     if (file.fieldname === "notesImage") {
-      cb(null, "../client/public/notes/images/");
+      cb(null, "./public/notes/images/");
     } else {
-      cb(null, "../client/public/notes/docs/");
+      cb(null, "./public/notes/docs/");
     }
   },
   filename: function (req, file, cb) {
@@ -66,7 +67,15 @@ router.post(
   ]),
   createNotes
 );
-router.route("/notes").get(getAllNotes);
-router.route("/notes/:id").get(getSingleNotes).delete(deleteNotes);
+router.route("/").get(getAllNotes);
+router.route("/:id").get(getSingleNotes).delete(deleteNotes);
+router.patch(
+  "/:id",
+  upload.fields([
+    { name: "notesImage", maxCount: 1 },
+    { name: "notesDoc", maxCount: 1 },
+  ]),
+  updateNotes
+);
 
 module.exports = router;
