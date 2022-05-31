@@ -196,6 +196,26 @@ const deleteStudyScheme = async (req, res) => {
   }
   res.status(StatusCodes.OK).json({ msg: "Study Scheme Deleted" });
 };
+const downloadPDF = async (req, res) => {
+  const id = req.params.id;
+  const notes = await Notes.findOne({ _id: id });
+  if (notes !== "") {
+    return res.sendfile(notes.notesDoc);
+  }
+  const ebook = await Ebook.findOne({ _id: id });
+  if (ebook !== "") {
+    return res.sendfile(ebook.ebookDoc);
+  }
+  const studyscheme = await studySchemeModel.findOne({ _id: id });
+  if (studyscheme !== "") {
+    return res.sendfile(studyscheme.studySchemeDoc);
+  }
+  const paper = await Paper.findOne({ _id: id });
+  if (paper !== "") {
+    return res.sendfile(paper.paperDoc);
+  }
+  res.status(StatusCodes.OK).json({ msg: "No file found" });
+};
 
 module.exports = {
   createEbook,
