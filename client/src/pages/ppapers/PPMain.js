@@ -34,7 +34,7 @@ const PPMain = () => {
                         </div>
                     </div>
                 </div>
-                <div className='subject-div my-4'>
+                <div className='subject-div my-4'> 
                     <div className='coll-div-hdr'>
                         <div className='r-img-div'>
                             <img src={chap1} alt='logo' />
