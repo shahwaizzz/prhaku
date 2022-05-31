@@ -11,6 +11,7 @@ const {
   deleteNews,
   editNews,
   getSingleNews,
+  downloadPDF,
 } = require("../controllers/admin-controller");
 
 const multer = require("multer");
@@ -82,7 +83,7 @@ router.patch(
   ]),
   updateEbook
 );
-
+router.route("/download/:id").get(downloadPDF);
 //news routes
 router.route("/news").get(getAllNews).post(createNews);
 router.route("/news/:id").get(getSingleNews).delete(deleteNews).patch(editNews);

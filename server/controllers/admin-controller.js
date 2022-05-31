@@ -73,6 +73,13 @@ const getSingleNotes = async (req, res) => {
   }
   res.status(StatusCodes.OK).json({ notes });
 };
+const getNotesByClass = async (req, res) => {
+  const notes = await Notes.find({ class: req.params.class });
+  if (notes === "") {
+    throw new NotFoundError("Notes not found");
+  }
+  res.status(StatusCodes.OK).json({ notes });
+};
 const updateNotes = async (req, res) => {
   const notes = await Notes.findOneAndUpdate({ _id: req.params.id }, req.body, {
     new: true,
@@ -188,7 +195,9 @@ const editStudyScheme = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: "Study Scheme Updated" });
 };
 const deleteStudyScheme = async (req, res) => {
-  const deletedStudyScheme = await Paper.findByIdAndDelete({ _id: req.params.id });
+  const deletedStudyScheme = await Paper.findByIdAndDelete({
+    _id: req.params.id,
+  });
   if (!deletedStudyScheme) {
     throw new NotFoundError("Study Scheme does not exist");
   }
@@ -197,19 +206,19 @@ const deleteStudyScheme = async (req, res) => {
 const downloadPDF = async (req, res) => {
   const id = req.params.id;
   const notes = await Notes.findOne({ _id: id });
-  if (notes !== "") {
+  if (notes !== " ") {
     return res.sendfile(notes.notesDoc);
   }
   const ebook = await Ebook.findOne({ _id: id });
-  if (ebook !== "") {
+  if (ebook !== " ") {
     return res.sendfile(ebook.ebookDoc);
   }
   const studyscheme = await studySchemeModel.findOne({ _id: id });
-  if (studyscheme !== "") {
+  if (studyscheme !== " ") {
     return res.sendfile(studyscheme.studySchemeDoc);
   }
   const paper = await Paper.findOne({ _id: id });
-  if (paper !== "") {
+  if (paper !== " ") {
     return res.sendfile(paper.paperDoc);
   }
   res.status(StatusCodes.OK).json({ msg: "No file found" });
@@ -224,6 +233,7 @@ module.exports = {
   createNotes,
   getAllNotes,
   getSingleNotes,
+  getNotesByClass,
   updateNotes,
   deleteNotes,
   createNews,
@@ -241,4 +251,5 @@ module.exports = {
   getSingleStudyScheme,
   editStudyScheme,
   deleteStudyScheme,
+  downloadPDF,
 };

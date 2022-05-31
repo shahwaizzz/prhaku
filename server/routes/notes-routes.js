@@ -4,6 +4,7 @@ const {
   createNotes,
   getAllNotes,
   getSingleNotes,
+  getNotesByClass,
   updateNotes,
   deleteNotes,
 } = require("../controllers/admin-controller");
@@ -77,5 +78,6 @@ router.patch(
   ]),
   updateNotes
 );
+router.get("/:class", getNotesByClass);
 
 module.exports = router;
