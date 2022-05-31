@@ -13,17 +13,11 @@ const Notes = () => {
   const [img, setImg] = useState(null);
   const [doc, setDoc] = useState(null);
   const [data, setData] = useState(null);
+  const [editId, setEditId] = useState(null);
   const [editData, setEditData] = useState(null);
 
   const { register, handleSubmit } = useForm();
 
-  // useEffect(() => {
-  //   axios.get("http://localhost:5000/api/categories").then((response) => {
-  //     setCat(response.data);
-  //   }).catch((error) => {
-  //     console.log(error);
-  //   })
-  // },[])
   useEffect(() => {
     axios
       .get("http://localhost:5000/notes")
@@ -49,12 +43,13 @@ const Notes = () => {
     alert("set edit");
     setShow1(true);
     alert(id);
-    setEditData("znotes");
     axios
-      .get(`http://localhost:5000/notes/notes/${id}`)
+      .get(`http://localhost:5000/notes/${id}`)
       .then((response) => {
         const { notes } = response.data;
-        console.log("response : ", response.data.notes);
+        setEditData(response.data.notes);
+        setEditId(id);
+        // console.log("response : ", response.data.notes);
         console.log("editData : ", editData);
       })
       .catch((error) => {
@@ -62,51 +57,18 @@ const Notes = () => {
       });
   };
 
-  const handleSubmit1 = async (e) => {
-    // alert("Request send")
-    // e.preventDefault();
-    // console.log("hello world");
-    // const formData = new FormData();
-    // formData.append("productimg", product.img);
-    // formData.append("title", product.title);
-    // formData.append("desc", product.desc);
-    // formData.append("category", product.category);
-    // formData.append("size", product.size);
-    // formData.append("color", product.color);
-    // formData.append("price", product.price);
-    // formData.append("quantity", product.quantity);
-    // axios
-    //   .post("http://localhost:5000/api/products/add", formData, {
-    //     headers: {
-    //       "Content-Type": "multipart/form-data",
-    //       "token": `Bearer ${auth}`,
-    //     },
-    //   })
-    //   .then((res) => {
-    //     console.log(res);
-    //     alert("Product added successfully");
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     alert("error in sending request");
-    //   });
-  };
   function delFun(idd) {
-    //   alert(`${baseURL}/`+idd);
-    //   axios.delete("http://localhost:5000/api/products/"+idd, {
-    //     headers: {
-    //       "token": 'Bearer '+auth,
-    //     },
-    //   }).then((response) => {
-    //     console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-    //     console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-    //     console.log(response);
-    //     console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-    //     alert("Product deleted Successfully");
-    //   }).catch((error) => {
-    //     console.log(error);
-    //   })
-    // }
+      axios.delete(`http://localhost:5000/notes/${idd}`).then((response) => {
+        console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+        console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+        console.log("response : ", response); 
+        console.log("response data: ", response.data);
+        console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+        alert("Notes deleted Successfully");
+      }).catch((error) => {
+        console.log(error);
+      })
+  }
     // function updateFun(element){
     //   setProduct({...element});
     //   console.log("UPDATE PRODUCT UPDATE PRODUCT UPDATE PRODUCT");
@@ -141,7 +103,7 @@ const Notes = () => {
     //       console.log(err);
     //       alert("error in sending request");
     //     });
-  }
+  // }
 
   const onSubmit = (notes) => {
     console.log(notes);
@@ -154,6 +116,7 @@ const Notes = () => {
     console.log("FormData : ", formData);
     console.log("img : ", img);
     console.log("doc : ", doc);
+    
     axios
       .post("http://localhost:5000/notes/create-notes", formData)
       .then((res) => {
@@ -165,6 +128,42 @@ const Notes = () => {
         alert("error in sending request");
       });
   };
+
+  const onEditSubmit = (notes) => {
+    console.log(notes);
+    console.log("edit id is equal to :", notes.id)
+    const formData = new FormData();
+    formData.append("title", notes.title);
+    formData.append("class", notes.class);
+    formData.append("subject", notes.subject);
+    formData.append("notesImage", img);
+    formData.append("notesDoc", doc);
+    // console.log("editFormData : ", formData);
+    console.log("editFormData : ");
+    console.log("editFormData : ");
+    console.log("editFormData : ");
+    console.log("titel : ",notes.title);
+    console.log("class : ",notes.class);
+    console.log("subject : ",notes.subject);
+
+    console.log("img : ", img);
+    console.log("doc : ", doc);
+    console.log("*********************")
+    console.log("Edit id usestate --- ",editId);
+    console.log("*********************")
+    
+    axios
+      .patch(`http://localhost:5000/notes/${editId}`, formData)
+      .then((res) => {
+        console.log(res);
+        alert("Notes Updated successfully");
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("error in sending request");
+      });
+  };
+  // alert(editData && editData.title)
 
   return (
     <>
@@ -201,8 +200,8 @@ const Notes = () => {
                     <td>{notes.title}</td>
                     <td>{notes.class}</td>
                     <td>{notes.subject}</td>
-                    {/* <td>Image{index+1}</td> */}
-                    <td>{notes.notesImage}</td>
+                    <td>Image{index+1}</td>
+                    {/* <td>{notes.notesImage}</td> */}
                     <td>Doc{index + 1}</td>
                     {/* <td><img src={`../../../${notes.notesImage}`} width="60px" height="40px" alt="notes_image" /></td> */}
                     {/* <td>{notes.notesDoc}</td> */}
@@ -215,7 +214,7 @@ const Notes = () => {
                       </button>
                     </td>
                     <td>
-                      <button className='btn mt-2 btn-danger'>Delete</button>
+                      <button onClick={() => delFun(notes._id)} className='btn mt-2 btn-danger'>Delete</button>
                     </td>
                   </tr>
                 ))}
@@ -299,27 +298,76 @@ const Notes = () => {
       {/* Model for updating item */}
 
       <Modal show={show1} onHide={() => setShow1(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title className='fw-700'>Edit Class</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
+        <Form encType='multipart/form-data' onSubmit={handleSubmit(onEditSubmit)}>
+          <Modal.Header closeButton>
+            <Modal.Title className='fw-700'>Edit Notes</Modal.Title>
+            {editData? editData.title: '' }
+            {editData? editData._id: '' }
+          </Modal.Header>
+          <Modal.Body>
+            <input type="hidden" {...register("id")} value={editData? editData._id: ''} />
             <Form.Group className='mb-3' controlId='formGroupEmail'>
-              <Form.Label>Class Name</Form.Label>
-              <Form.Control type='text' placeholder='Enter Class Name' />
+              <Form.Label>Title</Form.Label>
+              <Form.Control
+                type='text'
+                {...register("title")}
+                placeholder='Enter Notes Title'
+                required
+                defaultValue={editData && editData.title} 
+              />
+            </Form.Group>
+            <Form.Group className='mb-3' controlId='formGroupCategory'>
+              <Form.Label>Category</Form.Label>
+              <Form.Control
+                type='text'
+                {...register("class")}
+                placeholder='Enter Notes Class'
+                defaultValue={editData && editData.class}
+                required
+              />
+            </Form.Group>
+            <Form.Group className='mb-3' controlId='formGroupCategory'>
+              <Form.Label>Subject</Form.Label>
+              <Form.Control
+                type='text'
+                {...register("subject")}
+                placeholder='Enter Notes Subject'
+                required
+                defaultValue={editData && editData.subject}
+              />
             </Form.Group>
             <Form.Group className='mb-3' controlId='formGroupPassword'>
               <Form.Label>Image</Form.Label>
-              <Form.Control type='file' placeholder='Select An Image' />
+              <Form.Control
+                type='file'
+                {...register("notesImage")}
+                name='img'
+                onChange={(e) => setImg(e.target.files[0])}
+                placeholder='Select An Image'
+                required
+              />
             </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant='secondary' onClick={() => setShow1(false)}>
-            Close
-          </Button>
-          <Button variant='primary'>Submit</Button>
-        </Modal.Footer>
+            <Form.Group className='mb-3' controlId='formGroupPassword'>
+              <Form.Label>File</Form.Label>
+              <Form.Control
+                type='file'
+                {...register("notesDoc")}
+                name='doc'
+                onChange={(e) => setDoc(e.target.files[0])}
+                placeholder='Select An Image'
+                required
+              />
+            </Form.Group>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant='secondary' onClick={handleClose}>
+              Close
+            </Button>
+            <Button variant='primary' type='submit'>
+              Submit
+            </Button>
+          </Modal.Footer>
+        </Form>
       </Modal>
     </>
   );

@@ -9,20 +9,22 @@ const Papers = () => {
   const [show, setShow] = useState(false);
   const [show1, setShow1] = useState(false);  
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true); 
-  const [img, setImg] = useState(null);
+  const handleShow = () => setShow(true);
   const [doc, setDoc] = useState(null);
   const [data, setData] = useState(null);
+  const [editId, setEditId] = useState(null);
+  const [editData, setEditData] = useState(null);
 
   const { register, handleSubmit } = useForm();
 
-  // useEffect(() => {
-  //   axios.get("http://localhost:5000/api/categories").then((response) => {
-  //     setCat(response.data);
-  //   }).catch((error) => {
-  //     console.log(error);
-  //   })    
-  // },[])
+  useEffect(() => {
+    axios.get("http://localhost:5000/paper/").then((response) => {
+      setData(response.data.papers);
+      console.log(data);
+    }).catch((error) => {
+      console.log(error);
+    })    
+  },[])
   // useEffect(() => {
   //   axios.get("http://localhost:5000/api/products").then((response) => {
   //     setData(response.data);
@@ -73,21 +75,17 @@ const Papers = () => {
     //   });
   };
   function delFun(idd){
-  //   alert(`${baseURL}/`+idd);
-  //   axios.delete("http://localhost:5000/api/products/"+idd, {
-  //     headers: { 
-  //       "token": 'Bearer '+auth,
-  //     },
-  //   }).then((response) => {
-  //     console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-  //     console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-  //     console.log(response);
-  //     console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-  //     alert("Product deleted Successfully");
-  //   }).catch((error) => {
-  //     console.log(error);
-  //   })
-  // }
+    // alert(`${baseURL}/`+idd);
+    axios.delete(`http://localhost:5000/paper/${idd}`).then((response) => {
+      console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+      console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+      console.log(response);
+      console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+      alert("Paper deleted Successfully");
+    }).catch((error) => {
+      console.log(error);
+    })
+  }
   // function updateFun(element){
   //   setProduct({...element});
   //   console.log("UPDATE PRODUCT UPDATE PRODUCT UPDATE PRODUCT");
@@ -123,7 +121,7 @@ const Papers = () => {
   //       console.log(err);
   //       alert("error in sending request");
   //     });
-  }
+  // }
 
   const onSubmit = (paper) => {
     console.log(paper);
@@ -148,6 +146,47 @@ const Papers = () => {
       });
   };
 
+  const handleEdit = (id) => {
+    alert("set edit");
+    setShow1(true);
+    alert(id);
+    axios
+      .get(`http://localhost:5000/paper/${id}`)
+      .then((response) => {
+        // const { notes } = response.data;
+        setEditData(response.data.paper);
+        setEditId(id);
+        console.log("response : ", response.data.paper);
+        console.log("editData : ", editData);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const onEditSubmit = (paper) => {
+    console.log(paper);
+    const formData = new FormData();
+    formData.append("board", paper.board);
+    formData.append("class", paper.class);
+    formData.append("subject", paper.subject);
+    formData.append("type", paper.type);
+    formData.append("university", paper.university);
+    formData.append("paperDoc", doc);
+    console.log("FormData : ", formData);
+    console.log("doc : ", doc);
+    axios
+      .patch(`http://localhost:5000/paper/${editId}`, formData)
+      .then((res) => {
+        console.log(res);
+        alert("Paper Updated successfully");
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("error in sending request");
+      });
+  };
+
 
   return (
     <>
@@ -163,45 +202,33 @@ const Papers = () => {
             <thead>
               <tr>
                 <th>Sr</th>
-                <th>Class Name</th>
-                <th>Image</th>
+                <th>Board</th>
+                <th>Class</th>
+                <th>Subject</th>
+                <th>Type</th>
+                <th>University</th>
+                <th>File</th>
                 <th>Edit</th>
                 <th>Delete</th>
               </tr>
             </thead>
             <tbody>
-              <tr className="mt-2">
-                <td>1</td>
-                <td>Class One</td>
-                <td>Image</td>
-                <td><button className="btn mt-2 btn-primary px-4" onClick={() => setShow1(true)}>Edit</button></td>
-                <td><button className="btn mt-2 btn-danger">Delete</button></td>
-                <td>1</td>
-              </tr>
-              <tr className="mt-2">
-                <td>1</td>
-                <td>Class One</td>
-                <td>Image</td>
-                <td><button className="btn mt-2 btn-primary px-4" onClick={() => setShow1(true)}>Edit</button></td>
-                <td><button className="btn mt-2 btn-danger">Delete</button></td>
-                <td>1</td>
-              </tr>
-              <tr className="mt-2">
-                <td>1</td>
-                <td>Class One</td>
-                <td>Image</td>
-                <td><button className="btn mt-2 btn-primary px-4" onClick={() => setShow1(true)}>Edit</button></td>
-                <td><button className="btn mt-2 btn-danger">Delete</button></td>
-                <td>1</td>
-              </tr>
-              <tr className="mt-2">
-                <td>1</td>
-                <td>Class One</td>
-                <td>Image</td>
-                <td><button className="btn mt-2 btn-primary px-4" onClick={() => setShow1(true)}>Edit</button></td>
-                <td><button className="btn mt-2 btn-danger">Delete</button></td>
-                <td>1</td>
-              </tr>
+            {data &&
+              data.map((paper, index) => (
+              <tr className="mt-2" key={index}>
+                <td>{index+1}</td>
+                <td>{paper.board}</td>
+                <td>{paper.class}</td>
+                <td>{paper.subject}</td>
+                <td>{paper.type}</td>
+                <td>{paper.university && paper.university}</td>
+                {/* <td>{paper.paperDoc}</td>                 */}
+                <td>File{index+1}</td>                
+                <td><button className="btn mt-2 btn-primary px-4" onClick={() => handleEdit(paper._id)}>Edit</button></td>
+                <td><button onClick={() => delFun(paper._id)} className="btn mt-2 btn-danger">Delete</button></td>
+              </tr>                
+              ))
+            }              
             </tbody>
           </table>
         </div>
@@ -214,7 +241,7 @@ const Papers = () => {
           <Modal show={show} onHide={handleClose}>
             <Form encType='multipart/form-data' onSubmit={handleSubmit(onSubmit)}>
               <Modal.Header closeButton>
-                <Modal.Title className='fw-700'>Add Paper</Modal.Title>
+                <Modal.Title className='fw-700'>Add Paper</Modal.Title>                
               </Modal.Header>
               <Modal.Body>
                 <Form.Group className='mb-3' controlId='formGroupEmail'>
@@ -287,29 +314,80 @@ const Papers = () => {
           {/* Model for updating item */}
 
           <Modal show={show1} onHide={() => setShow1(false)}>
-            <Modal.Header closeButton>
-              <Modal.Title className="fw-700">Edit Class</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Form>
-                <Form.Group className="mb-3" controlId="formGroupEmail">
-                  <Form.Label>Class Name</Form.Label>
-                  <Form.Control type="text" placeholder="Enter Class Name" />
+            <Form encType='multipart/form-data' onSubmit={handleSubmit(onEditSubmit)}>
+              <Modal.Header closeButton>
+                <Modal.Title className='fw-700'>Edit Paper</Modal.Title>
+                {editData? editData._id: 'no id found'}
+              </Modal.Header>
+              <Modal.Body>
+                <Form.Group className='mb-3' controlId='formGroupEmail'>
+                  <Form.Label>Board</Form.Label>
+                  <Form.Control
+                    type='text'
+                    {...register("board")}
+                    placeholder='Enter Board'
+                    required
+                    defaultValue={editData? editData.board: '' }
+                  />
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="formGroupPassword">
-                  <Form.Label>Image</Form.Label>
-                  <Form.Control type="file" placeholder="Select An Image" />
+                <Form.Group className='mb-3' controlId='formGroupCategory'>
+                  <Form.Label>Category</Form.Label>
+                  <Form.Control
+                    type='text'
+                    {...register("class")}
+                    placeholder='Enter Category'
+                    defaultValue={editData? editData.category: '' }
+                    required
+                  />
                 </Form.Group>
-              </Form>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={() => setShow1(false)}>
-                Close
-              </Button>
-              <Button variant="primary">
-                Submit
-              </Button>
-            </Modal.Footer>
+                <Form.Group className='mb-3' controlId='formGroupCategory'>
+                  <Form.Label>Subject</Form.Label>
+                  <Form.Control
+                    type='text'
+                    {...register("subject")}
+                    placeholder='Enter Subject'
+                    required
+                  />
+                </Form.Group>
+                <Form.Group className='mb-3' controlId='formGroupCategory'>
+                  <Form.Label>Type</Form.Label>
+                  <Form.Select defaultValue={editData? editData.type: '' } aria-label="Default select example" {...register("type")}>
+                    <option>Select Type</option>
+                    <option value="Past Paper">Past Paper</option>
+                    <option value="Guess Paper">Guess Paper</option>
+                    <option value="Test Series">Test Series</option>
+                  </Form.Select>
+                </Form.Group>
+                <Form.Group className='mb-3' controlId='formGroupCategory'>
+                  <Form.Label>university</Form.Label>
+                  <Form.Control
+                    type='text'
+                    {...register("university")}
+                    placeholder='Enter University'
+                    defaultValue={editData? editData.university: '' }
+                  />
+                </Form.Group>
+                <Form.Group className='mb-3' controlId='formGroupPassword'>
+                  <Form.Label>File</Form.Label>
+                  <Form.Control
+                    type='file'
+                    {...register("notesDoc")}
+                    name='doc'
+                    onChange={(e) => setDoc(e.target.files[0])}
+                    placeholder='Select An Image'
+                    required
+                  />
+                </Form.Group>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant='secondary' onClick={handleClose}>
+                  Close
+                </Button>
+                <Button variant='primary' type='submit'>
+                  Submit
+                </Button>
+              </Modal.Footer>
+            </Form>
           </Modal>
     </>
   );

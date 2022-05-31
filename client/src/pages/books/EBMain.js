@@ -1,10 +1,21 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Container, Row, Col, Button, Form } from 'react-bootstrap'
 import {BiSearchAlt2} from 'react-icons/bi';
 import {AiOutlineDownload} from 'react-icons/ai';
 import cover1 from '../../img/img1.jpg';
+import axios from 'axios';
 
 const EBMain = () => {
+    const [data, setData] = useState(null);
+    useEffect(() => {
+    axios.get("http://localhost:5000/admin/ebooks/").then((response) => {
+      setData(response.data.ebooks);
+      console.log(data);
+    }).catch((error) => {
+      console.log(error);
+    })    
+  },[])
+
   return (
     <>  
     <Container className='py-5'>
@@ -44,143 +55,19 @@ const EBMain = () => {
             </Col>
         </Row>
         <Row>
-            <Col lg={2} md={3} sm={6} xs={12} >
-                <div className='book-card'>
-                    <div>
-                        <img src={cover1} alt="book cover" className='cover-img' />
+            {data && data.map((book, index) => (
+                <Col lg={2} md={3} sm={6} xs={12} key={index} >
+                    <div className='book-card'>
+                        <div>
+                            <img src={`http://localhost:5000/${book.ebookImage}`} alt="book cover" className='cover-img' />
+                        </div>
+                        <h2 className='pt-3'>{book.title}</h2>
+                        <b>{book.category}</b>
+                        <br />
+                        <Button className='mt-3' variant='dark'><AiOutlineDownload size="0.5cm" /> Download</Button>
                     </div>
-                    <h2 className='pt-3'>Title</h2>
-                    <b>Class Name</b>
-                    <br />
-                    <Button className='mt-3' variant='dark'><AiOutlineDownload size="0.5cm" /> Download</Button>
-                </div>
-            </Col>
-            <Col lg={2} md={3} sm={6} xs={12} >
-                <div className='book-card'>
-                    <div>
-                        <img src={cover1} alt="book cover" className='cover-img' />
-                    </div>
-                    <h2 className='pt-3'>Title</h2>
-                    <b>Class Name</b>
-                    <br />
-                    <Button className='mt-3' variant='dark'><AiOutlineDownload size="0.5cm" /> Download</Button>
-                </div>
-            </Col>
-            <Col lg={2} md={3} sm={6} xs={12} >
-                <div className='book-card'>
-                    <div>
-                        <img src={cover1} alt="book cover" className='cover-img' />
-                    </div>
-                    <h2 className='pt-3'>Title</h2>
-                    <b>Class Name</b>
-                    <br />
-                    <Button className='mt-3' variant='dark'><AiOutlineDownload size="0.5cm" /> Download</Button>
-                </div>
-            </Col>
-            <Col lg={2} md={3} sm={6} xs={12} >
-                <div className='book-card'>
-                    <div>
-                        <img src={cover1} alt="book cover" className='cover-img' />
-                    </div>
-                    <h2 className='pt-3'>Title</h2>
-                    <b>Class Name</b>
-                    <br />
-                    <Button className='mt-3' variant='dark'><AiOutlineDownload size="0.5cm" /> Download</Button>
-                </div>
-            </Col>
-            <Col lg={2} md={3} sm={6} xs={12} >
-                <div className='book-card'>
-                    <div>
-                        <img src={cover1} alt="book cover" className='cover-img' />
-                    </div>
-                    <h2 className='pt-3'>Title</h2>
-                    <b>Class Name</b>
-                    <br />
-                    <Button className='mt-3' variant='dark'><AiOutlineDownload size="0.5cm" /> Download</Button>
-                </div>
-            </Col>
-            <Col lg={2} md={3} sm={6} xs={12} >
-                <div className='book-card'>
-                    <div>
-                        <img src={cover1} alt="book cover" className='cover-img' />
-                    </div>
-                    <h2 className='pt-3'>Title</h2>
-                    <b>Class Name</b>
-                    <br />
-                    <Button className='mt-3' variant='dark'><AiOutlineDownload size="0.5cm" /> Download</Button>
-                </div>
-            </Col>
-            <Col lg={2} md={3} sm={6} xs={12} >
-                <div className='book-card'>
-                    <div>
-                        <img src={cover1} alt="book cover" className='cover-img' />
-                    </div>
-                    <h2 className='pt-3'>Title</h2>
-                    <b>Class Name</b>
-                    <br />
-                    <Button className='mt-3' variant='dark'><AiOutlineDownload size="0.5cm" /> Download</Button>
-                </div>
-            </Col>
-            <Col lg={2} md={3} sm={6} xs={12} >
-                <div className='book-card'>
-                    <div>
-                        <img src={cover1} alt="book cover" className='cover-img' />
-                    </div>
-                    <h2 className='pt-3'>Title</h2>
-                    <b>Class Name</b>
-                    <br />
-                    <Button className='mt-3' variant='dark'><AiOutlineDownload size="0.5cm" /> Download</Button>
-                </div>
-            </Col>
-            <Col lg={2} md={3} sm={6} xs={12} >
-                <div className='book-card'>
-                    <div>
-                        <img src={cover1} alt="book cover" className='cover-img' />
-                    </div>
-                    <h2 className='pt-3'>Title</h2>
-                    <b>Class Name</b>
-                    <br />
-                    <Button className='mt-3' variant='dark'><AiOutlineDownload size="0.5cm" /> Download</Button>
-                </div>
-            </Col>
-            <Col lg={2} md={3} sm={6} xs={12} >
-                <div className='book-card'>
-                    <div>
-                        <img src={cover1} alt="book cover" className='cover-img' />
-                    </div>
-                    <h2 className='pt-3'>Title</h2>
-                    <b>Class Name</b>
-                    <br />
-                    <Button className='mt-3' variant='dark'><AiOutlineDownload size="0.5cm" /> Download</Button>
-                </div>
-            </Col>
-            <Col lg={2} md={3} sm={6} xs={12} >
-                <div className='book-card'>
-                    <div>
-                        <img src={cover1} alt="book cover" className='cover-img' />
-                    </div>
-                    <h2 className='pt-3'>Title</h2>
-                    <b>Class Name</b>
-                    <br />
-                    <Button className='mt-3' variant='dark'><AiOutlineDownload size="0.5cm" /> Download</Button>
-                </div>
-            </Col>
-            <Col lg={2} md={3} sm={6} xs={12} >
-                <div className='book-card'>
-                    <div>
-                        <img src={cover1} alt="book cover" className='cover-img' />
-                    </div>
-                    <h2 className='pt-3'>Title</h2>
-                    <b>Class Name</b>
-                    <br />
-                    <Button className='mt-3' variant='dark'><AiOutlineDownload size="0.5cm" /> Download</Button>
-                </div>
-            </Col>
-            <Col xs={12}>
-                <div className='advert11'>
-                    <h1>Advert</h1>
-                </div>
-            </Col>
+                </Col>
+            ))}            
         </Row>
     </Container>
     </>

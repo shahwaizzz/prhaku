@@ -13,6 +13,8 @@ const EBooks = () => {
   const [img, setImg] = useState(null);
   const [doc, setDoc] = useState(null);
   const [data, setData] = useState(null);
+  const [editId, setEditId] = useState(null);
+  const [editData, setEditData] = useState(null);
 
   const { register, handleSubmit } = useForm();
 
@@ -94,22 +96,17 @@ const EBooks = () => {
     //     alert("error in sending request");
     //   });
   };
-  function delFun(idd) {
-    //   alert(`${baseURL}/`+idd);
-    //   axios.delete("http://localhost:5000/api/products/"+idd, {
-    //     headers: {
-    //       "token": 'Bearer '+auth,
-    //     },
-    //   }).then((response) => {
-    //     console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-    //     console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-    //     console.log(response);
-    //     console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-    //     alert("Product deleted Successfully");
-    //   }).catch((error) => {
-    //     console.log(error);
-    //   })
-    // }
+  function delFun(id) {
+      axios.delete(`http://localhost:5000/admin/ebooks/${id}`).then((response) => {
+        console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+        console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+        console.log(response);
+        console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+        alert("Ebook deleted Successfully");
+      }).catch((error) => {
+        console.log(error);
+      })
+  }
     // function updateFun(element){
     //   setProduct({...element});
     //   console.log("UPDATE PRODUCT UPDATE PRODUCT UPDATE PRODUCT");
@@ -144,7 +141,7 @@ const EBooks = () => {
     //       console.log(err);
     //       alert("error in sending request");
     //     });
-  }
+  // }
 
   const onSubmit = (ebook) => {
     console.log(ebook);
@@ -158,6 +155,46 @@ const EBooks = () => {
     console.log("doc : ", doc);
     axios
       .post("http://localhost:5000/admin/create-ebook", formData)
+      .then((res) => {
+        console.log(res);
+        alert("EBook added successfully");
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("error in sending request");
+      });
+  };
+  
+  const handleEdit = (id) => {
+    alert("set edit");
+    setShow1(true);
+    alert(id);
+    axios
+      .get(`http://localhost:5000/admin/ebooks/${id}`)
+      .then((response) => {
+        // const { notes } = response.data;
+        setEditData(response.data.ebooks);
+        setEditId(id);
+        console.log("response : ", response.data);
+        console.log("editData : ", editData);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const onEditSubmit = (ebook) => {
+    console.log(ebook);
+    const formData = new FormData();
+    formData.append("title", ebook.title);
+    formData.append("category", ebook.category);
+    formData.append("ebookImage", img);
+    formData.append("ebookDoc", doc);
+    console.log("FormData : ", formData);
+    console.log("img : ", img);
+    console.log("doc : ", doc);
+    axios
+      .patch(`http://localhost:5000/admin/ebooks/${editId}`, formData)
       .then((res) => {
         console.log(res);
         alert("EBook added successfully");
@@ -195,80 +232,28 @@ const EBooks = () => {
               </tr>
             </thead>
             <tbody>
-            {data!== null?data.map((book, index) => (
+            {data && data.map((book, index) => (
               <tr className='mt-2' key={index}>
                 <td>{index+1}</td>
                 <td>{book.title}</td>
                 <td>{book.category}</td>
-                <td>{book.ebookImage}</td>
-                <td>{book.ebookDoc}</td>
+                {/* <td>{book.ebookImage}</td> */}
+                <td>Image{index+1}</td>
+                <td>File{index+1}</td>
+                {/* <td>{book.ebookDoc}</td> */}
                 <td>
                   <button
                     className='btn mt-2 btn-primary px-4'
-                    onClick={() => setShow1(true)}
+                    onClick={() => handleEdit(book._id)}
                   >
                     Edit
                   </button>
                 </td>
                 <td>
-                  <button className='btn mt-2 btn-danger'>Delete</button>
+                  <button onClick={() => delFun(book._id)} className='btn mt-2 btn-danger'>Delete</button>
                 </td>
               </tr>
-            )):''}
-              <tr className='mt-2'>
-                <td>2</td>
-                <td>Class One</td>
-                <td>cat3</td>
-                <td>Image</td>
-                <td>file23</td>
-                <td>
-                  <button
-                    className='btn mt-2 btn-primary px-4'
-                    onClick={() => setShow1(true)}
-                  >
-                    Edit
-                  </button>
-                </td>
-                <td>
-                  <button className='btn mt-2 btn-danger'>Delete</button>
-                </td>
-              </tr>
-              <tr className='mt-2'>
-                <td>3</td>
-                <td>Class One</td>
-                <td>cat2</td>
-                <td>Image</td>
-                <td>Image</td>
-                <td>
-                  <button
-                    className='btn mt-2 btn-primary px-4'
-                    onClick={() => setShow1(true)}
-                  >
-                    Edit
-                  </button>
-                </td>
-                <td>
-                  <button className='btn mt-2 btn-danger'>Delete</button>
-                </td>
-              </tr>
-              <tr className='mt-2'>
-                <td>4</td>
-                <td>Class One</td>
-                <td>cat6</td>
-                <td>Image</td>
-                <td>Image</td>
-                <td>
-                  <button
-                    className='btn mt-2 btn-primary px-4'
-                    onClick={() => setShow1(true)}
-                  >
-                    Edit
-                  </button>
-                </td>
-                <td>
-                  <button className='btn mt-2 btn-danger'>Delete</button>
-                </td>
-              </tr>
+            ))}              
             </tbody>
           </table>
         </div>
@@ -339,27 +324,61 @@ const EBooks = () => {
       {/* Model for updating item */}
 
       <Modal show={show1} onHide={() => setShow1(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title className='fw-700'>Edit Class</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form encType='multipart/form-data'>
+        <Form encType='multipart/form-data' onSubmit={handleSubmit(onEditSubmit)}>
+          <Modal.Header closeButton>
+            <Modal.Title className='fw-700'>Edit E-Book</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
             <Form.Group className='mb-3' controlId='formGroupEmail'>
-              <Form.Label>Class Name</Form.Label>
-              <Form.Control type='text' placeholder='Enter Class Name' />
+              <Form.Label>E-Book Title</Form.Label>
+              <Form.Control
+                type='text'
+                {...register("title")}
+                placeholder='Enter E-Book Title'
+                required
+              />
+            </Form.Group>
+            <Form.Group className='mb-3' controlId='formGroupCategory'>
+              <Form.Label>E-Book Category</Form.Label>
+              <Form.Control
+                type='text'
+                {...register("category")}
+                placeholder='Enter E-Book Title'
+                required
+              />
             </Form.Group>
             <Form.Group className='mb-3' controlId='formGroupPassword'>
               <Form.Label>Image</Form.Label>
-              <Form.Control type='file' placeholder='Select An Image' />
+              <Form.Control
+                type='file'
+                {...register("ebookImage")}
+                name='img'
+                onChange={(e) => setImg(e.target.files[0])}
+                placeholder='Select An Image'
+                required
+              />
             </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant='secondary' onClick={() => setShow1(false)}>
-            Close
-          </Button>
-          <Button variant='primary'>Submit</Button>
-        </Modal.Footer>
+            <Form.Group className='mb-3' controlId='formGroupPassword'>
+              <Form.Label>File</Form.Label>
+              <Form.Control
+                type='file'
+                {...register("ebookDoc")}
+                name='doc'
+                onChange={(e) => setDoc(e.target.files[0])}
+                placeholder='Select An Image'
+                required
+              />
+            </Form.Group>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant='secondary' onClick={handleClose}>
+              Close
+            </Button>
+            <Button variant='primary' type='submit'>
+              Submit
+            </Button>
+          </Modal.Footer>
+        </Form>
       </Modal>
     </>
   );

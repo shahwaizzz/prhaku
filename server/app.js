@@ -45,7 +45,7 @@ app.use("/auth/admin", adminAuthRoutes);
 app.use("/admin", adminRoutes);
 app.use("/notes", notesRoutes);
 app.use("/paper", paperRoutes);
-app.use("/studyscheme", studyschemeRoutes);
+app.use("/studyscheme", studyschemeRoutes); 
 // not found middleware
 app.use(notFoundMiddleware);
 // app.use((req, res, next) => {

@@ -188,9 +188,7 @@ const editStudyScheme = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: "Study Scheme Updated" });
 };
 const deleteStudyScheme = async (req, res) => {
-  const deletedStudyScheme = await Paper.findByIdAndDelete({
-    _id: req.paramas.id,
-  });
+  const deletedStudyScheme = await Paper.findByIdAndDelete({ _id: req.params.id });
   if (!deletedStudyScheme) {
     throw new NotFoundError("Study Scheme does not exist");
   }

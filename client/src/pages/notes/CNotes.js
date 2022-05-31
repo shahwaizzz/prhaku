@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState, useEffect} from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import logo1 from '../../img/icons/eng.png';
 import logo2 from '../../img/icons/badshahi-mosque.png';
@@ -16,9 +16,13 @@ import logo13 from '../../img/icons/design-tool.png';
 import logo14 from '../../img/icons/carts.png';
 import logo15 from '../../img/icons/economy.png';
 import logo16 from '../../img/icons/accounts.png';
+import axios from 'axios';
 
 
 const CNotes = () => {
+    
+
+
   return (
     <Container fluid className='py-5'>
         <Row>
