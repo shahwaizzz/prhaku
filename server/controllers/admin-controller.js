@@ -19,7 +19,7 @@ const createEbook = async (req, res) => {
 };
 const getAllEbooks = async (req, res) => {
   const ebooks = await Ebook.find({});
-  if (!ebooks) {
+  if (ebooks.length === 0) {
     throw new NotFoundError("No Ebooks Found");
   }
   res.status(StatusCodes.OK).json({ ebooks });
@@ -50,7 +50,7 @@ const deleteEbook = async (req, res) => {
 };
 // ------------ Notes --------
 const createNotes = async (req, res) => {
-  console.log(req.file);
+  // console.log(req.file);
   const note = await Notes.create({
     ...req.body,
     notesDoc: req.files.notesDoc[0].path,
@@ -61,7 +61,7 @@ const createNotes = async (req, res) => {
 };
 const getAllNotes = async (req, res) => {
   const notes = await Notes.find({});
-  if (!notes) {
+  if (notes.length === 0) {
     throw new NotFoundError("No Notes Found");
   }
   res.status(StatusCodes.OK).json({ notes });
@@ -75,7 +75,14 @@ const getSingleNotes = async (req, res) => {
 };
 const getNotesByClass = async (req, res) => {
   const notes = await Notes.find({ class: req.params.class });
-  if (notes === "") {
+  if (notes.length === 0) {
+    throw new NotFoundError("Notes not found");
+  }
+  res.status(StatusCodes.OK).json({ notes });
+};
+const getNotesByChapter = async (req, res) => {
+  const notes = await Notes.find({ chapter: req.params.chapter });
+  if (notes.length === 0) {
     throw new NotFoundError("Notes not found");
   }
   res.status(StatusCodes.OK).json({ notes });
@@ -115,7 +122,7 @@ const deleteNews = async (req, res) => {
 };
 const getAllNews = async (req, res) => {
   const news = await News.find({});
-  if (!news) {
+  if (news.length === 0) {
     throw new NotFoundError("No News Found");
   }
   res.status(StatusCodes.OK).json({ ...news });
@@ -135,6 +142,9 @@ const createPaper = async (req, res) => {
 };
 const viewAllPapers = async (req, res) => {
   const papers = await Paper.find({});
+  if (papers.length === 0) {
+    throw new NotFoundError("No Papers Found");
+  }
   res.status(StatusCodes.OK).json({ papers });
 };
 const getSinglePaper = async (req, res) => {
@@ -171,6 +181,9 @@ const createStudyScheme = async (req, res) => {
 };
 const viewAllStudySchemes = async (req, res) => {
   const studySchemes = await studySchemeModel.find({});
+  if (studySchemes.length === 0) {
+    throw new NotFoundError("No Study Schemes Found");
+  }
   res.status(StatusCodes.OK).json({ studySchemes });
 };
 const getSingleStudyScheme = async (req, res) => {
@@ -234,6 +247,7 @@ module.exports = {
   getAllNotes,
   getSingleNotes,
   getNotesByClass,
+  getNotesByChapter,
   updateNotes,
   deleteNotes,
   createNews,

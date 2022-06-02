@@ -15,6 +15,10 @@ const notesSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please Provide Class"],
   },
+  chapter: {
+    type: String,
+    required: [true, "Please Provide Chapter"],
+  },
   notesImage: {
     type: String,
     required: [true, "Please Provide Notes Image"],

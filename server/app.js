@@ -8,6 +8,7 @@ const errorHandlerMiddleware = require("./middleware/error-handler");
 const notFoundMiddleware = require("./middleware/not-found");
 const morgan = require("morgan");
 const adminAuthRoutes = require("./routes/admin-auth-routes");
+const studentAuthRoutes = require("./routes/student-auth-routes");
 const adminRoutes = require("./routes/admin-routes");
 const studyschemeRoutes = require("./routes/study-scheme-routes");
 const cors = require("cors");
@@ -43,9 +44,10 @@ app.use((req, res, next) => {
 //my routers
 app.use("/auth/admin", adminAuthRoutes);
 app.use("/admin", adminRoutes);
+app.use("/auth/student", studentAuthRoutes);
 app.use("/notes", notesRoutes);
 app.use("/paper", paperRoutes);
-app.use("/studyscheme", studyschemeRoutes); 
+app.use("/studyscheme", studyschemeRoutes);
 // not found middleware
 app.use(notFoundMiddleware);
 // app.use((req, res, next) => {
