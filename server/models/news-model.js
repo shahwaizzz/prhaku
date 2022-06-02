@@ -16,6 +16,10 @@ const newsSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please Provide Category"],
     },
+    newsImage: {
+      type: String,
+      required: [true, "Please Provide Image"],
+    },
   },
   { timestamps: true }
 );

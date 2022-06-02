@@ -99,7 +99,7 @@ const deleteNotes = async (req, res) => {
 };
 // news
 const createNews = async (req, res) => {
-  const news = await News.create({ ...req.body });
+  const news = await News.create({ ...req.body, newsImage: req.file.path });
   res.status(StatusCodes.CREATED).json({ msg: "News Created" });
 };
 const editNews = async (req, res) => {

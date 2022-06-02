@@ -64,6 +64,34 @@ const upload = multer({
   fileFilter: fileFilter,
 });
 
+//multer configuration for news
+const newsStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./public/news/images/");
+  },
+  filename: function (req, file, cb) {
+    cb(null, new Date().toISOString().replace(/:/g, "-") + file.originalname);
+  },
+});
+const newsFileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === "image/png" ||
+    file.mimetype === "image/jpg" ||
+    file.mimetype === "image/jpeg"
+  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+const newsUpload = multer({
+  storage: newsStorage,
+  limits: {
+    fileSize: 1024 * 1024 * 25,
+  },
+  fileFilter: newsFileFilter,
+});
+
 //ebooks routing
 router.post(
   "/create-ebook",
@@ -85,7 +113,8 @@ router.patch(
 );
 router.route("/download/:id").get(downloadPDF);
 //news routes
-router.route("/news").get(getAllNews).post(createNews);
+router.post("/news", newsUpload.single("newsImage"), createNews);
+router.route("/news").get(getAllNews);
 router.route("/news/:id").get(getSingleNews).delete(deleteNews).patch(editNews);
 
 module.exports = router;
