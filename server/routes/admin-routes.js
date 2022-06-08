@@ -12,6 +12,7 @@ const {
   editNews,
   getSingleNews,
   downloadPDF,
+  viewStudents,
 } = require("../controllers/admin-controller");
 
 const multer = require("multer");
@@ -116,5 +117,6 @@ router.route("/download/:id").get(downloadPDF);
 router.post("/news", newsUpload.single("newsImage"), createNews);
 router.route("/news").get(getAllNews);
 router.route("/news/:id").get(getSingleNews).delete(deleteNews).patch(editNews);
+router.route("/students").get(viewStudents);
 
 module.exports = router;

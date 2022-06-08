@@ -4,6 +4,7 @@ const Ebook = require("../models/ebook-model");
 const Notes = require("../models/notes-model");
 const News = require("../models/news-model");
 const Paper = require("../models/paper-model");
+const Student = require("../models/student-model");
 const studySchemeModel = require("../models/study-scheme-model");
 //-------- Ebooks -------------
 const createEbook = async (req, res) => {
@@ -236,6 +237,13 @@ const downloadPDF = async (req, res) => {
   }
   res.status(StatusCodes.OK).json({ msg: "No file found" });
 };
+const viewStudents = async (req, res) => {
+  const students = await Student.find({});
+  if (students.length === 0) {
+    throw new NotFoundError("No students found");
+  }
+  res.status(StatusCodes.OK).json({ students });
+};
 
 module.exports = {
   createEbook,
@@ -266,4 +274,5 @@ module.exports = {
   editStudyScheme,
   deleteStudyScheme,
   downloadPDF,
+  viewStudents,
 };
